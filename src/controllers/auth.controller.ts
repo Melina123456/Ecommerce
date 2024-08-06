@@ -50,5 +50,8 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const me = async (req: Request, res: Response) => {
-  res.json(req["user"]);
+  // res.json(req["user"]);
+  // res.json((<any>req).user);
+  console.log(req.user);
+  res.json(req.user);
 };
