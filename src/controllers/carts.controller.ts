@@ -4,7 +4,6 @@ import { Product } from "@prisma/client";
 import { prismaClient } from "..";
 import { NotFoundException } from "../exceptions/not_found";
 import { ErrorCode } from "../exceptions/root";
-import { any } from "zod";
 import { BadRequestsException } from "../exceptions/bad_requests";
 
 export const addItemToCart = async (req: Request, res: Response) => {

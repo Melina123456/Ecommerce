@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prismaClient } from "..";
 import { NotFoundException } from "../exceptions/not_found";
 import { ErrorCode } from "../exceptions/root";
+import { cancelOrderService } from "./orders.service";
 
 export const createOrder = async (req: Request, res: Response) => {
   //     1. to create the transaction
@@ -72,24 +73,10 @@ export const listOrders = async (req: Request, res: Response) => {
 
 export const cancelOrder = async (req: Request, res: Response) => {
   try {
-    //1. wrap it inside transaction
-    // 2. check if the user is cancelling its own order
-    const order = await prismaClient.order.update({
-      where: {
-        id: +req.params.id,
-      },
-      data: {
-        status: "CANCELLED",
-      },
-    });
-    await prismaClient.orderEvent.create({
-      data: {
-        orderId: order.id,
-        status: "CANCELLED",
-      },
-    });
-    res.json(order);
+    const data = await cancelOrderService(+req.params.id);
+    res.json(data);
   } catch (error) {
+    console.log(error);
     throw new NotFoundException("Order not found", ErrorCode.ORDER_NOT_FOUND);
   }
 };
