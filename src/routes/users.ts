@@ -1,27 +1,25 @@
 import { Router } from "express";
 import { errorHandler } from "../error_handler";
 import authMiddleware from "../middlewares/auth";
-import adminMiddleware from "../middlewares/admin";
-import { addAddress, deleteAddress, listAddresses } from "../controllers/users";
+import {
+  addAddress,
+  deleteAddress,
+  listAddresses,
+  updateUser,
+} from "../controllers/users";
 
 const userRoutes: Router = Router();
 
-userRoutes.post(
-  "/address",
-  [authMiddleware, adminMiddleware],
-  errorHandler(addAddress)
-);
+userRoutes.post("/address", [authMiddleware], errorHandler(addAddress));
 
 userRoutes.delete(
   "/address/:id",
-  [authMiddleware, adminMiddleware],
+  [authMiddleware],
   errorHandler(deleteAddress)
 );
 
-userRoutes.get(
-  "/address",
-  [authMiddleware, adminMiddleware],
-  errorHandler(listAddresses)
-);
+userRoutes.get("/address", [authMiddleware], errorHandler(listAddresses));
+
+userRoutes.put("/update", [authMiddleware], errorHandler(updateUser));
 
 export default userRoutes;
