@@ -88,9 +88,15 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const searchProducts = async (req: Request, res: Response) => {
   //implement pagination here
+  const skip = req.query.skip?.toString() || "0";
   const products = await prismaClient.product.findMany({
+    skip: +skip || 0,
+    take: 2,
     where: {
       name: {
+        search: req.query.q?.toString(),
+      },
+      description: {
         search: req.query.q?.toString(),
       },
     },
