@@ -16,6 +16,7 @@ export class HttpException extends Error {
     this.errorCode = errorCode;
     this.statusCode = statusCode;
     this.errors = errors;
+    console.log("Error: ", message, errorCode, statusCode, errors);
   }
 }
 
@@ -31,4 +32,7 @@ export enum ErrorCode {
   PRODUCT_NOT_FOUND = 4001,
   PRODUCT_DOES_NOT_BELONG_TO_USER = 4002,
   ORDER_NOT_FOUND = 5001,
+  ORDER_NOT_FOUND_here = 5001,
+  ORDER_ALREADY_CANCELLED = 5002,
+  ORDER_DOES_NOT_BELONG_TO_USER = 5003,
 }

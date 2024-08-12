@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { prismaClient } from "..";
 import { compareSync, hashSync } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../secrets";
@@ -7,6 +6,7 @@ import { BadRequestsException } from "../exceptions/bad_requests";
 import { ErrorCode } from "../exceptions/root";
 import { SignUpSchema } from "../schema/users";
 import { NotFoundException } from "../exceptions/not_found";
+import { prismaClient } from "../prisma";
 
 export const signup = async (
   req: Request,

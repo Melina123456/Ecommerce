@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { changeQuantitySchema, createCartSchema } from "../schema/cart";
 import { Product } from "@prisma/client";
-import { prismaClient } from "..";
+import { prismaClient } from "../prisma";
 import { NotFoundException } from "../exceptions/not_found";
 import { ErrorCode } from "../exceptions/root";
 import { BadRequestsException } from "../exceptions/bad_requests";

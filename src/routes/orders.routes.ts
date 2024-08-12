@@ -6,9 +6,9 @@ import {
   changeStatus,
   createOrder,
   getOrderById,
+  getOrderOfUser,
   listAllOrders,
   listOrders,
-  listUserOrders,
 } from "../controllers/orders.controller";
 import adminMiddleware from "../middlewares/admin";
 
@@ -22,16 +22,17 @@ orderRoutes.get(
   [authMiddleware, adminMiddleware],
   errorHandler(listAllOrders)
 );
-orderRoutes.get(
-  "/users/:id",
-  [authMiddleware, adminMiddleware],
-  errorHandler(listUserOrders)
-);
+// orderRoutes.get(
+//   "/users/:id",
+//   [authMiddleware, adminMiddleware],
+//   errorHandler(listUserOrders)
+// );
 orderRoutes.patch(
   "/:id/status",
   [authMiddleware, adminMiddleware],
   errorHandler(changeStatus)
 );
+orderRoutes.get("/get", [authMiddleware], errorHandler(getOrderOfUser));
 orderRoutes.get("/:id", [authMiddleware], errorHandler(getOrderById));
 
 export default orderRoutes;

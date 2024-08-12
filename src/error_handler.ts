@@ -27,6 +27,7 @@ export const errorHandler = (method: Function) => {
           );
         }
       }
+      console.log({ exception });
       next(exception);
     }
   };

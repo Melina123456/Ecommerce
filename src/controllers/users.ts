@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AddressSchema, updateUserSchema } from "../schema/users";
-import { prismaClient } from "..";
+import { prismaClient } from "../prisma";
 import { NotFoundException } from "../exceptions/not_found";
 import { ErrorCode } from "../exceptions/root";
 import { Address } from "@prisma/client";

@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { UnauthorizedException } from "../exceptions/unauthorized";
 import { ErrorCode } from "../exceptions/root";
 import * as jwt from "jsonwebtoken";
-import { prismaClient } from "..";
 import { JWT_SECRET } from "../secrets";
 import { User } from "@prisma/client";
+import { prismaClient } from "../prisma";
 
 declare module "express" {
   interface Request {
@@ -35,13 +35,17 @@ const authMiddleware = async (
     });
     if (!user) {
       next(new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED));
+    } else {
+      req.user = user;
+      console.log(req.user);
+      next();
     }
     // 5. to attach the user to the current request object
     // req["user"] = user;
     // req.user = user ;
-    req.user = user ? user : undefined;
-    console.log(req.user);
-    next();
+    // req.user = user
+    // console.log(req.user);
+    // next();
   } catch (error) {
     next(new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED));
   }
