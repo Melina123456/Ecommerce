@@ -1,5 +1,5 @@
 import { Router } from "express";
-import userRoutes from "./users";
+import userRoutes from "../modules/users.ts/users.routes";
 import orderRoutes from "../modules/orders/orders.routes";
 import ProductsRoutes from "../modules/product/product.route";
 import cartRoutes from "../modules/carts/cart.routes";

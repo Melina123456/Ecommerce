@@ -1,35 +1,33 @@
 import { Request, Response } from "express";
-import { AddressSchema, updateUserSchema } from "../schema/users";
-import { prismaClient } from "../prisma";
-import { NotFoundException } from "../exceptions/not_found";
-import { ErrorCode } from "../exceptions/root";
+import { AddressSchema, updateUserSchema } from "../../schema/users";
+import { prismaClient } from "../../prisma";
+import { NotFoundException } from "../../exceptions/not_found";
+import { ErrorCode } from "../../exceptions/root";
 import { Address } from "@prisma/client";
-import { BadRequestsException } from "../exceptions/bad_requests";
+import { BadRequestsException } from "../../exceptions/bad_requests";
+import { addAddressService, deleteAddressService } from "./users.service";
 
 export const addAddress = async (req: Request, res: Response) => {
-  AddressSchema.parse(req.body);
-  const address = await prismaClient.address.create({
-    data: {
-      ...req.body,
-      userId: req.user?.id,
-    },
-  });
-  res.json(address);
+  try {
+    AddressSchema.parse(req.body);
+    const data = req.body;
+    const uid = req.user?.id || "0";
+    const address = await addAddressService(data, +uid);
+    res.json(address);
+  } catch (error) {
+    console.log("controller", error);
+    throw error;
+  }
 };
 
 export const deleteAddress = async (req: Request, res: Response) => {
   try {
-    const deletedData = await prismaClient.address.delete({
-      where: {
-        id: +req.params.id,
-      },
-    });
-    res.json({ deletedData, message: "Address deleted successfully" });
+    const uid = req.user?.id || "0";
+    const deletedAddress = await deleteAddressService(+req.params.id, +uid);
+    res.json({ deletedAddress });
   } catch (error) {
-    throw new NotFoundException(
-      "Address not found.",
-      ErrorCode.ADDRESS_NOT_FOUND
-    );
+    console.log("controller", error);
+    throw error;
   }
 };
 
