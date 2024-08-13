@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { SignUpSchema } from "../../schema/users";
-import { loginService, meService, signupService } from "./auth.service";
+import { loginService, signupService } from "./auth.service";
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -27,12 +27,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const me = async (req: Request, res: Response) => {
   try {
-    const uid = req.user?.id || "0";
-    console.log(uid);
-    const user = meService(+uid);
-    // const user = res.json(req.user?.id);
-    console.log(user);
-    res.json(user);
+    res.json(req.user);
   } catch (error) {
     console.log("controller", error);
     throw error;

@@ -2,7 +2,6 @@ import { User } from "@prisma/client";
 import {
   ifUserExists,
   loginRepo,
-  meRepo,
   passwordMatches,
   signupRepo,
 } from "./auth.repository";
@@ -34,8 +33,4 @@ export const loginService = async (email: string, password: string) => {
     );
   }
   return await loginRepo(user.id, user.name);
-};
-
-export const meService = async (uId: number) => {
-  return meRepo(uId);
 };

@@ -42,17 +42,3 @@ export const passwordMatches = async (
 ) => {
   return compareSync(password, storedPassword);
 };
-
-export const meRepo = async (uid: number) => {
-  try {
-    const user = await prismaClient.user.findFirst({
-      where: {
-        id: uid,
-      },
-    });
-    return user;
-  } catch (error) {
-    console.log("repo", error);
-    throw error;
-  }
-};
