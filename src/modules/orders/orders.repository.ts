@@ -1,5 +1,4 @@
-import { CartItem } from "@prisma/client";
-import { prismaClient } from "../prisma";
+import { prismaClient } from "../../prisma";
 
 export const cancelOrderRepository = async (id: number) => {
   try {
@@ -186,10 +185,10 @@ export const createOrderRepository = async (
   }
 };
 
-export const CheckIfCartItemExists = async (userId: number) => {
+export const CheckIfCartItemExists = async (id: number) => {
   return await prismaClient.cartItem.findFirst({
     where: {
-      userId,
+      id,
     },
   });
 };

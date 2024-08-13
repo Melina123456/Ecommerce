@@ -12,40 +12,56 @@ declare module "express" {
   }
 }
 
+// export interface AuthRequest extends Request {
+//   // user?: User;
+//   user: {
+//     id: number;
+//     email: string;
+//   };
+// }
+
 const authMiddleware = async (
+  // req: AuthRequest,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // 1. extract token from request headers
   const token = req.header("Authorization")?.replace("Bearer ", "") || "";
-  // const token = req.headers.authorization || "";
 
-  //2.if token is not present, throw unauthorized exception
   if (!token) {
     // throw new Error("hello");
-    next(new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED));
+    return next(
+      new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED)
+    );
   }
   try {
-    //3. if token is present, verify and extract the payload
-    const payload = jwt.verify(token, JWT_SECRET) as any;
-    // 4. to get user from the payload
+    const payload = jwt.verify(token, JWT_SECRET) as { userId: number };
     const user = await prismaClient.user.findFirst({
       where: { id: payload.userId },
     });
     if (!user) {
-      next(new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED));
-    } else {
-      req.user = user;
-      console.log(req.user);
-      next();
+      return next(
+        new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED)
+      );
     }
+    // else {
+    //   req.user = user;
+    //   console.log(req.user);
+    //   next();
+    // }
+    // req.user = {
+    //   id: user.id,
+    //   email: user.email,
+    // };
+    // console.log(req.user);
+    // next();
+
     // 5. to attach the user to the current request object
     // req["user"] = user;
     // req.user = user ;
-    // req.user = user
-    // console.log(req.user);
-    // next();
+    req.user = user;
+    console.log(req.user);
+    next();
   } catch (error) {
     next(new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED));
   }

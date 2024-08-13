@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { NotFoundException } from "../../exceptions/not_found";
+import { ErrorCode } from "../../exceptions/root";
 import {
   cancelOrderService,
   ChangeOrderStatusService,
@@ -8,8 +10,6 @@ import {
   listAllOrdersService,
   listOrdersService,
 } from "./orders.service";
-import { NotFoundException } from "../exceptions/not_found";
-import { ErrorCode } from "../exceptions/root";
 
 export const createOrder = async (req: Request, res: Response) => {
   //     1. to create the transaction
@@ -35,53 +35,6 @@ export const createOrder = async (req: Request, res: Response) => {
     console.log("controller", error);
     throw error;
   }
-  //   return await prismaClient.$transaction(async (tx) => {
-  //     const cartItems = await tx.cartItem.findMany({
-  //       where: {
-  //         userId: req.user?.id,
-  //       },
-  //       include: {
-  //         product: true,
-  //       },
-  //     });
-  //     if (cartItems.length === 0) {
-  //       return res.json({ message: "cart is empty" });
-  //     }
-  //     const price = cartItems.reduce((prev, current) => {
-  //       return prev + current.quantity * +current.product.price;
-  //     }, 0);
-  //     const address = await tx.address.findFirst({
-  //       where: {
-  //         id: req.user?.defaultBillingAddresses as any,
-  //       },
-  //     });
-  //     const order = await tx.order.create({
-  //       data: {
-  //         userId: req.user?.id,
-  //         netAmount: price,
-  //         address: address?.formattedAddress,
-  //         products: {
-  //           create: cartItems.map((cart) => {
-  //             return {
-  //               productId: cart.productId,
-  //               quantity: cart.quantity,
-  //             };
-  //           }),
-  //         },
-  //       } as any,
-  //     });
-  //     const orderEvent = await tx.orderEvent.create({
-  //       data: {
-  //         orderId: order.id,
-  //       },
-  //     });
-  //     await tx.cartItem.deleteMany({
-  //       where: {
-  //         userId: req.user?.id,
-  //       },
-  //     });
-  //     return res.json(order);
-  //   });
 };
 
 export const listOrders = async (req: Request, res: Response) => {
@@ -146,32 +99,3 @@ export const changeStatus = async (req: Request, res: Response) => {
     throw error;
   }
 };
-
-// export const listUserOrders = async (req: Request, res: Response) => {
-//   try {
-//     const skip = req.query.skip || "0";
-//     const take = req.query.take || "0";
-//     const orders = await listUserOrdersService(+req.params.id, +skip, +take);
-//     res.json(orders);
-//   } catch (error) {
-//     console.log("controller", error);
-//     throw error;
-//   }
-//   // const skip = req.query.skip?.toString() || "0";
-//   // let whereClause: any = {
-//   //   userId: +req.params.id,
-//   // };
-//   // const status = req.params.status;
-//   // if (status) {
-//   //   whereClause = {
-//   //     ...whereClause,
-//   //     status,
-//   //   };
-//   // }
-//   // const orders = await prismaClient.order.findMany({
-//   //   where: whereClause,
-//   //   skip: +skip || 0,
-//   //   take: 5,
-//   // });
-//   // res.json(orders);
-// };

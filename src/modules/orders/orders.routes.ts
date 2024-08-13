@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { errorHandler } from "../error_handler";
-import authMiddleware from "../middlewares/auth";
+import { errorHandler } from "../../error_handler";
+import authMiddleware from "../../middlewares/auth";
 import {
   cancelOrder,
   changeStatus,
@@ -9,8 +9,8 @@ import {
   getOrderOfUser,
   listAllOrders,
   listOrders,
-} from "../controllers/orders.controller";
-import adminMiddleware from "../middlewares/admin";
+} from "./orders.controller";
+import adminMiddleware from "../../middlewares/admin";
 
 const orderRoutes: Router = Router();
 
@@ -22,11 +22,6 @@ orderRoutes.get(
   [authMiddleware, adminMiddleware],
   errorHandler(listAllOrders)
 );
-// orderRoutes.get(
-//   "/users/:id",
-//   [authMiddleware, adminMiddleware],
-//   errorHandler(listUserOrders)
-// );
 orderRoutes.patch(
   "/:id/status",
   [authMiddleware, adminMiddleware],
