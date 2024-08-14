@@ -33,7 +33,6 @@ export const listProductsService = async (skip: number, take: number) => {
 };
 
 export const getProductByIdService = async (id: number) => {
-  // await checkIfProductExists(id);
   return getProductByIdRepository(id);
 };
 
