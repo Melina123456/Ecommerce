@@ -21,9 +21,6 @@ export const createOrder = async (req: Request, res: Response) => {
   //     7. create event
   //     8. to empty the cart
   try {
-    if (!req.user) {
-      throw new NotFoundException("user not found", ErrorCode.USER_NOT_FOUND);
-    }
     const uId = req.user.id;
     const defaultBillingAddresses = req.user.defaultBillingAddresses;
     if (!defaultBillingAddresses) {
@@ -38,16 +35,14 @@ export const createOrder = async (req: Request, res: Response) => {
 };
 
 export const listOrders = async (req: Request, res: Response) => {
-  const id = req.user?.id?.toString() || "0";
-  const orders = await listOrdersService(+id);
+  const orders = await listOrdersService(+req.user.id);
   console.log(orders);
   res.json(orders);
 };
 
 export const cancelOrder = async (req: Request, res: Response) => {
   try {
-    const uId = req.user?.id?.toString() || "0";
-    const data = await cancelOrderService(+req.params.id, +uId);
+    const data = await cancelOrderService(+req.params.id, +req.user.id);
     res.json(data);
   } catch (error) {
     console.log("controller", error);
@@ -57,8 +52,7 @@ export const cancelOrder = async (req: Request, res: Response) => {
 
 export const getOrderOfUser = async (req: Request, res: Response) => {
   try {
-    const uId = req.user?.id?.toString() || "0";
-    const order = await getOrderOfUserService(+uId);
+    const order = await getOrderOfUserService(+req.user.id);
     res.json({ order });
   } catch (error) {
     console.log("controller", error);

@@ -10,10 +10,7 @@ import { UnauthorizedException } from "../../exceptions/unauthorized";
 export const addItemToCart = async (req: Request, res: Response) => {
   try {
     const data = req.body;
-    const uId = req.user?.id;
-    if (!uId) {
-      throw new UnauthorizedException("abc", 22);
-    }
+    const uId = req.user.id;
     const cart = await addItemToCartService(data, +uId);
     res.json(cart);
   } catch (error) {
@@ -24,8 +21,10 @@ export const addItemToCart = async (req: Request, res: Response) => {
 
 export const deleteItemFromCart = async (req: Request, res: Response) => {
   try {
-    const uId = req.user?.id || "0";
-    const deletedItem = await deleteItemFromCartService(+req.params.id, +uId);
+    const deletedItem = await deleteItemFromCartService(
+      +req.params.id,
+      +req.user.id
+    );
     res.json({ deletedItem });
   } catch (error) {
     console.log("controller", error);
@@ -35,11 +34,10 @@ export const deleteItemFromCart = async (req: Request, res: Response) => {
 
 export const changeQuantity = async (req: Request, res: Response) => {
   try {
-    const uId = req.user?.id || "0";
     const quantity = req.body;
     const updatedCart = await changeQuantityService(
       +req.params.id,
-      +uId,
+      +req.user.id,
       quantity
     );
     res.json({
@@ -54,8 +52,7 @@ export const changeQuantity = async (req: Request, res: Response) => {
 
 export const getCart = async (req: Request, res: Response) => {
   try {
-    const uid = req.user?.id || "0";
-    const cart = await getCartService(+uid);
+    const cart = await getCartService(+req.user.id);
     res.json(cart);
   } catch (error) {
     console.log("controller", error);
