@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { errorHandler } from "../../error_handler";
+import { errorHandler } from "../../middlewares/error_handler";
 import authMiddleware from "../../middlewares/auth";
 import {
   addAddress,

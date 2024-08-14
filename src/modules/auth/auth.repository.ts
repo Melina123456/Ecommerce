@@ -1,7 +1,7 @@
 import { prismaClient } from "../../prisma";
 import { compareSync, hashSync } from "bcrypt";
-import { JWT_SECRET } from "../../secrets";
 import * as jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../../config/secrets";
 
 export const signupRepo = async (
   name: string,

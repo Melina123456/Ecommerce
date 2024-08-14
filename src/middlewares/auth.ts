@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { UnauthorizedException } from "../exceptions/unauthorized";
 import { ErrorCode } from "../exceptions/root";
 import * as jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../secrets";
+import { JWT_SECRET } from "../config/secrets";
 import { User } from "@prisma/client";
 import { prismaClient } from "../prisma";
 
@@ -47,7 +47,6 @@ const authMiddleware = async (
     req.user = user;
     console.log(req.user);
     next();
-
     // req.user = {
     //   id: user.id,
     //   email: user.email,

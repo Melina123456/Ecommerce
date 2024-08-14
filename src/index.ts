@@ -1,7 +1,7 @@
-import express, { Express, NextFunction, Request, Response } from "express";
-import { PORT } from "./secrets";
+import express, { Express } from "express";
 import rootRouter from "./routes";
 import { errorMiddleware } from "./middlewares/errors";
+import { PORT } from "./config/secrets";
 
 const app: Express = express();
 

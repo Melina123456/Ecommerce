@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { errorHandler } from "../error_handler";
+import { errorHandler } from "../../middlewares/error_handler";
 import {
   createProduct,
   deleteProduct,
@@ -7,9 +7,9 @@ import {
   listProducts,
   searchProducts,
   updateProduct,
-} from "../controllers/product.controller";
-import authMiddleware from "../middlewares/auth";
-import adminMiddleware from "../middlewares/admin";
+} from "./product.controller";
+import authMiddleware from "../../middlewares/auth";
+import adminMiddleware from "../../middlewares/admin";
 
 const ProductsRoutes: Router = Router();
 
@@ -20,7 +20,7 @@ ProductsRoutes.post(
 );
 
 ProductsRoutes.patch(
-  "/:id",
+  "/update/:id",
   [authMiddleware, adminMiddleware],
   errorHandler(updateProduct)
 );

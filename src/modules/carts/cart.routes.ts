@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authMiddleware from "../../middlewares/auth";
-import { errorHandler } from "../../error_handler";
+import { errorHandler } from "../../middlewares/error_handler";
 import {
   addItemToCart,
   changeQuantity,
