@@ -1,5 +1,6 @@
 {
   "watch": ["src"],
   "ext": ".js,.ts,d.ts",
-  "exec": "npx ts-node ./src/index.ts"
+  "exec":"npx ts-node -P tsconfig.json ./src/index.ts"
 }
+
