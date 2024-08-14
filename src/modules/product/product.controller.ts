@@ -10,7 +10,7 @@ import {
   searchProductsService,
   updateProductService,
 } from "./product.service";
-import { productSchema } from "../../schema/product";
+import { productSchema } from "./product.schema";
 import { BadRequestsException } from "../../exceptions/bad_requests";
 
 export const createProduct = async (req: Request, res: Response) => {

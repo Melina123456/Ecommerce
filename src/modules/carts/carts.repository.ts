@@ -1,4 +1,4 @@
-import { changeQuantitySchema, createCartSchema } from "../../schema/cart";
+import { changeQuantitySchema, createCartSchema } from "./cart.schema";
 import { createCartDto } from "./dto/create_cart.dto";
 import { prismaClient } from "../../prisma";
 

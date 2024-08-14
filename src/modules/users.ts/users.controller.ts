@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AddressSchema, updateUserSchema } from "../../schema/users";
+import { AddressSchema, updateUserSchema } from "./users.schema";
 import { NotFoundException } from "../../exceptions/not_found";
 import { ErrorCode } from "../../exceptions/root";
 import {
