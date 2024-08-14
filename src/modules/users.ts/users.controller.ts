@@ -1,11 +1,16 @@
 import { Request, Response } from "express";
 import { AddressSchema, updateUserSchema } from "../../schema/users";
-import { prismaClient } from "../../prisma";
 import { NotFoundException } from "../../exceptions/not_found";
 import { ErrorCode } from "../../exceptions/root";
-import { Address } from "@prisma/client";
-import { BadRequestsException } from "../../exceptions/bad_requests";
-import { addAddressService, deleteAddressService } from "./users.service";
+import {
+  addAddressService,
+  changeUserRoleService,
+  deleteAddressService,
+  getUserByIdservice,
+  listAddressesService,
+  listUsersService,
+  updateUserservice,
+} from "./users.service";
 
 export const addAddress = async (req: Request, res: Response) => {
   try {
@@ -32,106 +37,61 @@ export const deleteAddress = async (req: Request, res: Response) => {
 };
 
 export const listAddresses = async (req: Request, res: Response) => {
-  const address = await prismaClient.address.findMany({
-    where: {
-      id: req.user?.id,
-    },
-  });
-  res.json(address);
+  try {
+    const uid = req.user?.id || "0";
+    console.log(uid);
+    const address = await listAddressesService(+uid);
+    res.json(address);
+  } catch (error) {
+    console.log("controller", error);
+    throw error;
+  }
 };
 
 export const updateUser = async (req: Request, res: Response) => {
-  const validatedData = updateUserSchema.parse(req.body);
-  console.log(validatedData);
-  let shippingAddresses: Address;
-  let billingAddresses: Address;
-  if (validatedData.defaultShippingAddresses) {
-    try {
-      shippingAddresses = await prismaClient.address.findFirstOrThrow({
-        where: {
-          id: validatedData.defaultShippingAddresses,
-        },
-      });
-    } catch (error) {
-      throw new NotFoundException(
-        "Shipping address not found.",
-        ErrorCode.ADDRESS_NOT_FOUND
-      );
+  try {
+    const validatedData = updateUserSchema.parse(req.body);
+    const id = req.user?.id;
+    if (!id) {
+      throw new NotFoundException("user not found", ErrorCode.USER_NOT_FOUND);
     }
-    if (shippingAddresses.userId !== req.user?.id) {
-      throw new BadRequestsException(
-        "Address does not belong to the user",
-        ErrorCode.ADDRESS_DOES_NOT_BELONG_TO_USER
-      );
-    }
+    const updatedUser = await updateUserservice(+id, validatedData);
+    res.json(updatedUser);
+  } catch (error) {
+    console.log("controller", error);
+    throw error;
   }
-  if (validatedData.defaultBillingAddresses) {
-    try {
-      billingAddresses = await prismaClient.address.findFirstOrThrow({
-        where: {
-          id: validatedData.defaultBillingAddresses,
-        },
-      });
-    } catch (error) {
-      throw new NotFoundException(
-        "Shipping address not found.",
-        ErrorCode.ADDRESS_NOT_FOUND
-      );
-    }
-    if (billingAddresses.userId !== req.user?.id) {
-      throw new BadRequestsException(
-        "Address does not belong to the user",
-        ErrorCode.ADDRESS_DOES_NOT_BELONG_TO_USER
-      );
-    }
-  }
-
-  const updateUser = await prismaClient.user.update({
-    where: {
-      id: req.user?.id,
-    },
-    data: validatedData,
-  });
-  res.json(updateUser);
 };
 
 export const listUsers = async (req: Request, res: Response) => {
-  const skip = req.query.skip?.toString() || "0";
-  const users = await prismaClient.user.findMany({
-    skip: +skip || 0,
-    take: 5,
-  });
-  res.json(users);
+  try {
+    const skip = req.query.skip?.toString() || "0";
+    const take = req.query.take?.toString() || "0";
+    const users = await listUsersService(+skip, +take);
+    res.json(users);
+  } catch (error) {
+    console.log("controller", error);
+    throw error;
+  }
 };
 
 export const getUserById = async (req: Request, res: Response) => {
   try {
-    const user = await prismaClient.user.findFirstOrThrow({
-      where: {
-        id: +req.params.id,
-      },
-      include: {
-        addresses: true,
-      },
-    });
+    const user = await getUserByIdservice(+req.params.id);
     res.json(user);
   } catch (error) {
-    throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
+    console.log("controller", error);
+    throw error;
   }
 };
 
 export const changeUserRole = async (req: Request, res: Response) => {
   try {
-    const user = await prismaClient.user.update({
-      where: {
-        id: +req.params.id,
-      },
-      data: {
-        role: req.body.role,
-      },
-    });
-    res.json(user);
+    const role = req.body.role;
+    const updatedUser = await changeUserRoleService(+req.params.id, role);
+    res.json(updatedUser);
   } catch (error) {
-    throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
+    console.log("controller", error);
+    throw error;
   }
 };

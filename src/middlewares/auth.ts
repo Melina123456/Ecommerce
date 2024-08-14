@@ -44,11 +44,10 @@ const authMiddleware = async (
         new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED)
       );
     }
-    // else {
-    //   req.user = user;
-    //   console.log(req.user);
-    //   next();
-    // }
+    req.user = user;
+    console.log(req.user);
+    next();
+
     // req.user = {
     //   id: user.id,
     //   email: user.email,
@@ -59,9 +58,9 @@ const authMiddleware = async (
     // 5. to attach the user to the current request object
     // req["user"] = user;
     // req.user = user ;
-    req.user = user;
-    console.log(req.user);
-    next();
+    // req.user = user;
+    // console.log(req.user);
+    // next();
   } catch (error) {
     next(new UnauthorizedException("unauthorized", ErrorCode.UNAUTHORIZED));
   }

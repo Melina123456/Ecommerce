@@ -1,13 +1,22 @@
-import { Address } from "@prisma/client";
+import { Address, Role } from "@prisma/client";
 import {
   addAddressRepo,
+  changeUserRoleRepo,
   CheckAddressExists,
   CheckAddressExistsById,
+  checkIfAddressIdExists,
   deleteAddressRepo,
+  findUser,
+  getUserByIdRepo,
+  listAddressesRepo,
+  listUsersRepo,
+  updateUserRepo,
 } from "./users.repository";
 import { ErrorCode } from "../../exceptions/root";
 import { ConflictErrorException } from "../../exceptions/conflict_error_exception";
 import { NotFoundException } from "../../exceptions/not_found";
+import { updateUserDto } from "./dto/update_user_schema.dto";
+import { BadRequestsException } from "../../exceptions/bad_requests";
 
 export const addAddressService = async (data: Address, uid: number) => {
   const address = await CheckAddressExists(uid);
@@ -30,4 +39,55 @@ export const deleteAddressService = async (uid: number, id: number) => {
     );
   }
   return await deleteAddressRepo(address);
+};
+
+export const listAddressesService = async (uid: number) => {
+  return await listAddressesRepo(uid);
+};
+
+export const listUsersService = async (skip: number, take: number) => {
+  return await listUsersRepo(skip, take);
+};
+
+export const getUserByIdservice = async (uid: number) => {
+  const user = await getUserByIdRepo(uid);
+  if (!user) {
+    throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
+  }
+  return user;
+};
+
+export const changeUserRoleService = async (id: number, role: Role) => {
+  const user = await findUser(id);
+  if (!user) {
+    throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
+  }
+  const updatedUser = await changeUserRoleRepo(id, role);
+  return updatedUser;
+};
+
+export const updateUserservice = async (
+  id: number,
+  validatedData: updateUserDto
+) => {
+  const shippingAddresses = await checkIfAddressIdExists(
+    validatedData.defaultShippingAddresses
+  );
+  if (shippingAddresses.userId !== id) {
+    throw new BadRequestsException(
+      "you can update your address only with your created address.",
+      ErrorCode.ADDRESS_DOES_NOT_BELONG_TO_USER
+    );
+  }
+
+  const billingAddresses = await checkIfAddressIdExists(
+    validatedData.defaultBillingAddresses
+  );
+  if (billingAddresses.userId !== id) {
+    throw new BadRequestsException(
+      "you can update your address only with your created address.",
+      ErrorCode.ADDRESS_DOES_NOT_BELONG_TO_USER
+    );
+  }
+  return await updateUserRepo(id, validatedData);
 };

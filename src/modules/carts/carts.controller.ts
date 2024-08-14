@@ -5,11 +5,15 @@ import {
   deleteItemFromCartService,
   getCartService,
 } from "./carts.service";
+import { UnauthorizedException } from "../../exceptions/unauthorized";
 
 export const addItemToCart = async (req: Request, res: Response) => {
   try {
     const data = req.body;
-    const uId = req.user?.id || "0";
+    const uId = req.user?.id;
+    if (!uId) {
+      throw new UnauthorizedException("abc", 22);
+    }
     const cart = await addItemToCartService(data, +uId);
     res.json(cart);
   } catch (error) {
