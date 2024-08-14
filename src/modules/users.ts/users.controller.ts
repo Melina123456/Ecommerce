@@ -9,8 +9,10 @@ import {
   getUserByIdservice,
   listAddressesService,
   listUsersService,
+  updateAddressService,
   updateUserservice,
 } from "./users.service";
+import { BadRequestsException } from "../../exceptions/bad_requests";
 
 export const addAddress = async (req: Request, res: Response) => {
   try {
@@ -90,6 +92,23 @@ export const changeUserRole = async (req: Request, res: Response) => {
     const role = req.body.role;
     const updatedUser = await changeUserRoleService(+req.params.id, role);
     res.json(updatedUser);
+  } catch (error) {
+    console.log("controller", error);
+    throw error;
+  }
+};
+
+export const updateAddress = async (req: Request, res: Response) => {
+  try {
+    const data = req.body;
+    if (!data || Object.keys(data).length === 0) {
+      throw new BadRequestsException(
+        "Enter something to update",
+        ErrorCode.DATA_NOT_FOUND
+      );
+    }
+    const updatedAddress = await updateAddressService(+req.params.id, data);
+    res.json(updatedAddress);
   } catch (error) {
     console.log("controller", error);
     throw error;

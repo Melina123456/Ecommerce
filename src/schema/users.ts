@@ -15,7 +15,6 @@ export const AddressSchema = z.object({
 });
 
 export const updateUserSchema = z.object({
-  // name: z.string().optional(),
   defaultShippingAddresses: z.number(),
   defaultBillingAddresses: z.number(),
 });

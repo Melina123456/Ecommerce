@@ -8,6 +8,7 @@ import {
   getUserById,
   listAddresses,
   listUsers,
+  updateAddress,
   updateUser,
 } from "./users.controller";
 import adminMiddleware from "../../middlewares/admin";
@@ -35,6 +36,11 @@ userRoutes.get(
   "/:id",
   [authMiddleware, adminMiddleware],
   errorHandler(getUserById)
+);
+userRoutes.patch(
+  "/update/:id",
+  [authMiddleware, adminMiddleware],
+  errorHandler(updateAddress)
 );
 
 export default userRoutes;

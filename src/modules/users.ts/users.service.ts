@@ -4,12 +4,14 @@ import {
   changeUserRoleRepo,
   CheckAddressExists,
   CheckAddressExistsById,
+  CheckAddressExistsByIdOnly,
   checkIfAddressIdExists,
   deleteAddressRepo,
   findUser,
   getUserByIdRepo,
   listAddressesRepo,
   listUsersRepo,
+  updateAddressRepo,
   updateUserRepo,
 } from "./users.repository";
 import { ErrorCode } from "../../exceptions/root";
@@ -90,4 +92,9 @@ export const updateUserservice = async (
     );
   }
   return await updateUserRepo(id, validatedData);
+};
+
+export const updateAddressService = async (id: number, data: Address) => {
+  await CheckAddressExistsByIdOnly(id);
+  return await updateAddressRepo(id, data);
 };

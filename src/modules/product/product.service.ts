@@ -11,7 +11,6 @@ import {
   searchProductsRepo,
   updateProductRepo,
 } from "./product.repository";
-import { skip } from "node:test";
 
 export const createProductService = async (data: Product, tags: string) => {
   const productNameExists = await checkIfProductNameExistsRepository(data.name);

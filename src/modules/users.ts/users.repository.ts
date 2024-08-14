@@ -34,6 +34,14 @@ export const CheckAddressExistsById = async (id: number, uid: number) => {
   });
 };
 
+export const CheckAddressExistsByIdOnly = async (id: number) => {
+  return await prismaClient.address.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
 export const deleteAddressRepo = async (address: Address) => {
   const deletedData = await prismaClient.address.delete({
     where: {
@@ -128,4 +136,19 @@ export const checkIfAddressIdExists = async (AddressId: number) => {
       id: AddressId,
     },
   });
+};
+
+export const updateAddressRepo = async (id: number, data: Address) => {
+  try {
+    const updatedAddress = await prismaClient.address.update({
+      where: {
+        id,
+      },
+      data,
+    });
+    return updatedAddress;
+  } catch (error) {
+    console.log("repo", error);
+    throw error;
+  }
 };
