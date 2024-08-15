@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { SignUpSchema } from "../users.ts/users.schema";
+import { SignUpSchema } from "../users/users.schema";
 import { loginService, signupService } from "./auth.service";
 
 export const signup = async (req: Request, res: Response) => {
