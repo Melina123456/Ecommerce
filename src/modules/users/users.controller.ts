@@ -12,6 +12,7 @@ import {
   updateUserservice,
 } from "./users.service";
 import { constructPagination } from "../../utils/pagination.utils";
+
 export const addAddress = async (
   req: Request,
   res: Response,

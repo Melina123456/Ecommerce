@@ -75,10 +75,14 @@ export const getProductByIdRepository = async (id: number) => {
   }
 };
 
-export const searchProductsRepo = async (skip: number, search: string) => {
+export const searchProductsRepo = async (
+  skip: number,
+  take: number,
+  search: string
+) => {
   const products = await prismaClient.product.findMany({
-    skip: +skip || 0,
-    take: 2,
+    skip,
+    take,
     where: {
       name: {
         search,

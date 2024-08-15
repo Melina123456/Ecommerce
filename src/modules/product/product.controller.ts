@@ -109,9 +109,12 @@ export const searchProducts = async (
   next: NextFunction
 ) => {
   try {
-    const skip = req.query.skip?.toString() || "0";
+    const { skip, take } = constructPagination({
+      page: req.query.page?.toString(),
+      pageSize: req.query.pageSize?.toString(),
+    });
     const search = req.query.q?.toString() || "0";
-    const products = await searchProductsService(+skip, search);
+    const products = await searchProductsService(skip, take, search);
     res.json(products);
   } catch (error) {
     console.log("controller", error);

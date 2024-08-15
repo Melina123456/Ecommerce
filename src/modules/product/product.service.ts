@@ -34,8 +34,12 @@ export const getProductByIdService = async (id: number) => {
   return getProductByIdRepository(id);
 };
 
-export const searchProductsService = async (skip: number, search: string) => {
-  return await searchProductsRepo(skip, search);
+export const searchProductsService = async (
+  skip: number,
+  take: number,
+  search: string
+) => {
+  return await searchProductsRepo(skip, take, search);
 };
 
 export const deleteProductService = async (id: number) => {
