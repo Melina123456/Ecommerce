@@ -14,11 +14,13 @@ import {
   updateAddressRepo,
   updateUserRepo,
 } from "./users.repository";
-import { ErrorCode } from "../../exceptions/root";
-import { ConflictErrorException } from "../../exceptions/conflict_error_exception";
-import { NotFoundException } from "../../exceptions/not_found";
+import {
+  BadRequestsException,
+  ConflictErrorException,
+  ErrorCode,
+  NotFoundException,
+} from "../../exceptions/root";
 import { updateUserDto } from "./dto/update_user_schema.dto";
-import { BadRequestsException } from "../../exceptions/bad_requests";
 
 export const addAddressService = async (data: Address, uid: number) => {
   const address = await CheckAddressExists(uid);

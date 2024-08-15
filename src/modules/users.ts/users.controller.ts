@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { AddressSchema, updateUserSchema } from "./users.schema";
-import { NotFoundException } from "../../exceptions/not_found";
-import { ErrorCode } from "../../exceptions/root";
+import { BadRequestsException, ErrorCode, NotFoundException } from "../../exceptions/root";
 import {
   addAddressService,
   changeUserRoleService,
@@ -12,8 +11,6 @@ import {
   updateAddressService,
   updateUserservice,
 } from "./users.service";
-import { BadRequestsException } from "../../exceptions/bad_requests";
-
 export const addAddress = async (req: Request, res: Response) => {
   try {
     AddressSchema.parse(req.body);

@@ -5,9 +5,11 @@ import {
   passwordMatches,
   signupRepo,
 } from "./auth.repository";
-import { BadRequestsException } from "../../exceptions/bad_requests";
-import { ErrorCode } from "../../exceptions/root";
-import { NotFoundException } from "../../exceptions/not_found";
+import {
+  BadRequestsException,
+  ErrorCode,
+  NotFoundException,
+} from "../../exceptions/root";
 
 export const signupService = async (data: User) => {
   const user = await ifUserExists(data.email);

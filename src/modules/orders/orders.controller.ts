@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import { NotFoundException } from "../../exceptions/not_found";
-import { ErrorCode } from "../../exceptions/root";
 import {
   cancelOrderService,
   ChangeOrderStatusService,

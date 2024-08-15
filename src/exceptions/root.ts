@@ -42,3 +42,39 @@ export enum ErrorCode {
   CARTITEM_NOT_FOUND = 6001,
   DATA_NOT_FOUND = 6002,
 }
+
+export class BadRequestsException extends HttpException {
+  constructor(message: string, errorCode: ErrorCode, errors?: any) {
+    super(message, errorCode, 400, errors);
+  }
+}
+
+export class ConflictErrorException extends HttpException {
+  constructor(message: string, errorCode: ErrorCode) {
+    super(message, errorCode, 409, null);
+  }
+}
+
+export class InternalException extends HttpException {
+  constructor(message: string, errors: any, errorCode: number) {
+    super(message, errorCode, 500, errors);
+  }
+}
+
+export class NotFoundException extends HttpException {
+  constructor(message: string, errorCode: ErrorCode) {
+    super(message, errorCode, 404, null);
+  }
+}
+
+export class UnauthorizedException extends HttpException {
+  constructor(message: string, errorCode: number, errors?: any) {
+    super(message, errorCode, 401, errors);
+  }
+}
+
+export class UnprocessableEntity extends HttpException {
+  constructor(error: any, message: string, errorCode: number) {
+    super(message, errorCode, 422, error);
+  }
+}

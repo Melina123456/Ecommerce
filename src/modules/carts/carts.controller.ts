@@ -5,7 +5,6 @@ import {
   deleteItemFromCartService,
   getCartService,
 } from "./carts.service";
-import { UnauthorizedException } from "../../exceptions/unauthorized";
 
 export const addItemToCart = async (req: Request, res: Response) => {
   try {

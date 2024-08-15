@@ -1,6 +1,5 @@
 import { Product } from "@prisma/client";
-import { BadRequestsException } from "../../exceptions/bad_requests";
-import { ErrorCode } from "../../exceptions/root";
+import { BadRequestsException, ErrorCode } from "../../exceptions/root";
 import {
   checkIfProductExists,
   checkIfProductNameExistsRepository,

@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { prismaClient } from "../../prisma";
-import { NotFoundException } from "../../exceptions/not_found";
-import { ErrorCode } from "../../exceptions/root";
+import { BadRequestsException, ErrorCode } from "../../exceptions/root";
 import {
   createProductService,
   deleteProductService,
@@ -11,7 +9,6 @@ import {
   updateProductService,
 } from "./product.service";
 import { productSchema } from "./product.schema";
-import { BadRequestsException } from "../../exceptions/bad_requests";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
