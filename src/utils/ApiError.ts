@@ -50,21 +50,20 @@ export class HttpException extends Error {
 // }
 
 export class BadRequestsException extends HttpException {
-  constructor(
-    message: string,
-    // errorCode: ErrorCode,
-    errors?: any
-  ) {
+  constructor(message: string, errors?: any) {
     super(message, 400, errors);
   }
 }
 
 export class ConflictErrorException extends HttpException {
-  constructor(
-    message: string
-    // errorCode: ErrorCode
-  ) {
+  constructor(message: string) {
     super(message, 409, null);
+  }
+}
+
+export class PreConditionFailedException extends HttpException {
+  constructor(message: string, errors?: any) {
+    super(message, 412, errors);
   }
 }
 

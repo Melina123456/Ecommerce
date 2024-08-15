@@ -12,7 +12,7 @@ const authMiddleware = async (
   const token = req.header("Authorization")?.replace("Bearer ", "") || "";
 
   if (!token) {
-    return next(new UnauthorizedException("unauthorized"));
+    return next(new UnauthorizedException("Enter your access token."));
   }
   try {
     const payload = jwt.verify(token, JWT_SECRET) as { userId: number };

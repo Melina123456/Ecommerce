@@ -18,6 +18,9 @@ export const addItemToCartService = async (
   if (!productExists) {
     throw new NotFoundException("Product not found.");
   }
+  if (data.quantity > 1000) {
+    throw new BadRequestsException("The quantity must be less than 1000.");
+  }
   return addItemToCartRepository(data, uId);
 };
 

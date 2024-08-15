@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { BadRequestsException } from "../../utils/ApiError";
+import {
+  BadRequestsException,
+  PreConditionFailedException,
+} from "../../utils/ApiError";
 import {
   createProductService,
   deleteProductService,
@@ -18,7 +21,12 @@ export const createProduct = async (
   try {
     productSchema.parse(req.body);
     const data = req.body;
-    const tags = req.body.tags.join(",");
+    if (!data || Object.keys(data).length === 0) {
+      throw new PreConditionFailedException(
+        "Enter the data to create product."
+      );
+    }
+    const tags = data.tags.join(",");
     const product = await createProductService(data, tags);
     res.json(product);
   } catch (error) {
