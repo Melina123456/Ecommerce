@@ -1,8 +1,12 @@
-import { Request, Response } from "express";
-import { SignUpSchema } from "../users/users.schema";
+import { NextFunction, Request, Response } from "express";
 import { loginService, signupService } from "./auth.service";
+import { SignUpSchema } from "../users/users.schema";
 
-export const signup = async (req: Request, res: Response) => {
+export const signup = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     SignUpSchema.parse(req.body);
     const data = req.body;
@@ -10,11 +14,15 @@ export const signup = async (req: Request, res: Response) => {
     res.json(user);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const data = req.body;
     const user = await loginService(data.email, data.password);

@@ -5,7 +5,7 @@ import { signup, login, me } from "./auth.controller";
 
 const authRoutes: Router = Router();
 
-authRoutes.post("/signup", errorHandler(signup));
+authRoutes.post("/signup", signup);
 
 authRoutes.post("/login", errorHandler(login));
 
