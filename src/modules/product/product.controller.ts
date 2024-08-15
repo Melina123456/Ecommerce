@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { BadRequestsException } from "../../utils/ApiError";
 import {
   createProductService,
@@ -10,7 +10,11 @@ import {
 } from "./product.service";
 import { productSchema } from "./product.schema";
 
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     productSchema.parse(req.body);
     const data = req.body;
@@ -19,11 +23,15 @@ export const createProduct = async (req: Request, res: Response) => {
     res.json(product);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const updateProduct = async (req: Request, res: Response) => {
+export const updateProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const data = req.body;
     if (!data || Object.keys(data).length === 0) {
@@ -36,21 +44,29 @@ export const updateProduct = async (req: Request, res: Response) => {
     res.json(updatedProduct);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const deleteProduct = async (req: Request, res: Response) => {
+export const deleteProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const deletedProduct = await deleteProductService(+req.params.id);
     res.json({ deletedProduct });
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const listProducts = async (req: Request, res: Response) => {
+export const listProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const skip = req.query.skip || "0";
     const take = req.query.take || "0";
@@ -58,21 +74,29 @@ export const listProducts = async (req: Request, res: Response) => {
     res.json({ data });
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const getProductById = async (req: Request, res: Response) => {
+export const getProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const product = await getProductByIdService(+req.params.id);
     res.json({ product });
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const searchProducts = async (req: Request, res: Response) => {
+export const searchProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const skip = req.query.skip?.toString() || "0";
     const search = req.query.q?.toString() || "0";
@@ -80,6 +104,6 @@ export const searchProducts = async (req: Request, res: Response) => {
     res.json(products);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };

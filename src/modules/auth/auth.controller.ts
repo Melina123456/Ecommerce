@@ -29,15 +29,15 @@ export const login = async (
     res.json(user);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const me = async (req: Request, res: Response) => {
+export const me = async (req: Request, res: Response, next: NextFunction) => {
   try {
     res.json(req.user);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };

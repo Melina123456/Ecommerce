@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AddressSchema, updateUserSchema } from "./users.schema";
 import { BadRequestsException, NotFoundException } from "../../utils/ApiError";
 import {
@@ -11,7 +11,11 @@ import {
   updateAddressService,
   updateUserservice,
 } from "./users.service";
-export const addAddress = async (req: Request, res: Response) => {
+export const addAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     AddressSchema.parse(req.body);
     const data = req.body;
@@ -24,18 +28,26 @@ export const addAddress = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteAddress = async (req: Request, res: Response) => {
+export const deleteAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const uid = req.user?.id || "0";
     const deletedAddress = await deleteAddressService(+req.params.id, +uid);
     res.json({ deletedAddress });
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const listAddresses = async (req: Request, res: Response) => {
+export const listAddresses = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const uid = req.user?.id || "0";
     console.log(uid);
@@ -43,11 +55,15 @@ export const listAddresses = async (req: Request, res: Response) => {
     res.json(address);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const validatedData = updateUserSchema.parse(req.body);
     const id = req.user?.id;
@@ -58,11 +74,15 @@ export const updateUser = async (req: Request, res: Response) => {
     res.json(updatedUser);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const listUsers = async (req: Request, res: Response) => {
+export const listUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const skip = req.query.skip?.toString() || "0";
     const take = req.query.take?.toString() || "0";
@@ -70,32 +90,44 @@ export const listUsers = async (req: Request, res: Response) => {
     res.json(users);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const getUserById = async (req: Request, res: Response) => {
+export const getUserById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const user = await getUserByIdservice(+req.params.id);
     res.json(user);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const changeUserRole = async (req: Request, res: Response) => {
+export const changeUserRole = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const role = req.body.role;
     const updatedUser = await changeUserRoleService(+req.params.id, role);
     res.json(updatedUser);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
 
-export const updateAddress = async (req: Request, res: Response) => {
+export const updateAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const data = req.body;
     if (!data || Object.keys(data).length === 0) {
@@ -105,6 +137,6 @@ export const updateAddress = async (req: Request, res: Response) => {
     res.json(updatedAddress);
   } catch (error) {
     console.log("controller", error);
-    throw error;
+    next(error);
   }
 };
