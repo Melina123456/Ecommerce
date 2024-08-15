@@ -12,6 +12,7 @@ import {
   updateProductService,
 } from "./product.service";
 import { productSchema } from "./product.schema";
+import { constructPagination } from "../../utils/pagination.utils";
 
 export const createProduct = async (
   req: Request,
@@ -76,9 +77,11 @@ export const listProducts = async (
   next: NextFunction
 ) => {
   try {
-    const skip = req.query.skip || "0";
-    const take = req.query.take || "0";
-    const data = await listProductsService(+skip, +take);
+    const { skip, take } = constructPagination({
+      page: req.query.page?.toString(),
+      pageSize: req.query.pageSize?.toString(),
+    });
+    const data = await listProductsService(skip, take);
     res.json({ data });
   } catch (error) {
     console.log("controller", error);

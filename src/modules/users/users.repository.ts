@@ -65,7 +65,7 @@ export const listUsersRepo = async (skip: number, take: number) => {
   try {
     const users = await prismaClient.user.findMany({
       skip,
-      take: take || 5,
+      take,
     });
     return users;
   } catch (error) {

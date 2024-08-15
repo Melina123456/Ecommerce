@@ -22,7 +22,7 @@ ProductsRoutes.patch(
 
 ProductsRoutes.delete("/:id", [authMiddleware, adminMiddleware], deleteProduct);
 
-ProductsRoutes.get("/", [authMiddleware, adminMiddleware], listProducts);
+ProductsRoutes.get("/list", [authMiddleware, adminMiddleware], listProducts);
 
 ProductsRoutes.get("/search", [authMiddleware], searchProducts);
 

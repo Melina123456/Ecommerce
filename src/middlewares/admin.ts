@@ -11,12 +11,7 @@ const adminMiddleware = async (
     if (user?.role == "ADMIN") {
       next();
     } else {
-      next(
-        new UnauthorizedException(
-          "unauthorized, you must be admin."
-          // ErrorCode.UNAUTHORIZED
-        )
-      );
+      next(new UnauthorizedException("unauthorized, you must be admin."));
     }
   } catch (error) {
     console.log("middleware", error);

@@ -48,13 +48,17 @@ export const checkIfProductExists = async (id: number) => {
 };
 
 export const listProductsRepository = async (skip: number, take: number) => {
-  const count = await prismaClient.product.count();
-  console.log(count);
-  const products = await prismaClient.product.findMany({
-    skip: +skip || 0,
-    take: take || 3,
-  });
-  return { count, products };
+  try {
+    const products = await prismaClient.product.findMany({
+      skip,
+      take,
+    });
+    const count = await prismaClient.product.count();
+    return { count, products };
+  } catch (error) {
+    console.log("repo", error);
+    throw error;
+  }
 };
 
 export const getProductByIdRepository = async (id: number) => {

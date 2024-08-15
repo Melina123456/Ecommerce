@@ -98,8 +98,8 @@ export const listAllOrdersRepository = async (
   }
   const orders = await prismaClient.order.findMany({
     where: whereClause,
-    skip: +skip || 0,
-    take: +take || 5,
+    skip,
+    take,
   });
   return orders;
 };

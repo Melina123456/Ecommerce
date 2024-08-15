@@ -11,6 +11,7 @@ import {
   updateAddressService,
   updateUserservice,
 } from "./users.service";
+import { constructPagination } from "../../utils/pagination.utils";
 export const addAddress = async (
   req: Request,
   res: Response,
@@ -84,9 +85,13 @@ export const listUsers = async (
   next: NextFunction
 ) => {
   try {
-    const skip = req.query.skip?.toString() || "0";
-    const take = req.query.take?.toString() || "0";
-    const users = await listUsersService(+skip, +take);
+    const { skip, take } = constructPagination({
+      page: req.query.page?.toString(),
+      pageSize: req.query.pageSize?.toString(),
+    });
+    console.log("controller", skip);
+    console.log("controller", take);
+    const users = await listUsersService(skip, take);
     res.json(users);
   } catch (error) {
     console.log("controller", error);

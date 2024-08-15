@@ -8,6 +8,7 @@ import {
   listAllOrdersService,
   listOrdersService,
 } from "./orders.service";
+import { constructPagination } from "../../utils/pagination.utils";
 
 export const createOrder = async (
   req: Request,
@@ -94,8 +95,10 @@ export const listAllOrders = async (
   next: NextFunction
 ) => {
   try {
-    const skip = req.query.skip || "0";
-    const take = req.query.take || "0";
+    const { skip, take } = constructPagination({
+      page: req.query.page?.toString(),
+      pageSize: req.query.pageSize?.toString(),
+    });
     const status = req.query.status?.toString() || "0";
     const orders = await listAllOrdersService(status, +skip, +take);
     res.json(orders);
