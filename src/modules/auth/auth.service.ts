@@ -9,7 +9,7 @@ import {
   BadRequestsException,
   ErrorCode,
   NotFoundException,
-} from "../../exceptions/root";
+} from "../../utils/ApiError";
 
 export const signupService = async (data: User) => {
   const user = await ifUserExists(data.email);

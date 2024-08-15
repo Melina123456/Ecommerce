@@ -4,7 +4,7 @@ import {
   ErrorCode,
   HttpException,
   InternalException,
-} from "../exceptions/root";
+} from "../utils/ApiError";
 import { ZodError } from "zod";
 
 export const errorHandler = (method: Function) => {

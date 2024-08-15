@@ -2,7 +2,7 @@ import {
   BadRequestsException,
   ErrorCode,
   NotFoundException,
-} from "../../exceptions/root";
+} from "../../utils/ApiError";
 import { CheckIfCartItemExists } from "../orders/orders.repository";
 import {
   addItemToCartRepository,

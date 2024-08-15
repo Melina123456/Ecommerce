@@ -19,7 +19,7 @@ import {
   ConflictErrorException,
   ErrorCode,
   NotFoundException,
-} from "../../exceptions/root";
+} from "../../utils/ApiError";
 import { updateUserDto } from "./dto/update_user_schema.dto";
 
 export const addAddressService = async (data: Address, uid: number) => {

@@ -1,5 +1,5 @@
 import { Product } from "@prisma/client";
-import { BadRequestsException, ErrorCode } from "../../exceptions/root";
+import { BadRequestsException, ErrorCode } from "../../utils/ApiError";
 import { ProductRepository } from "./product.repository";
 
 export class ProductService {

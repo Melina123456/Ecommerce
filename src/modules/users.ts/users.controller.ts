@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { AddressSchema, updateUserSchema } from "./users.schema";
-import { BadRequestsException, ErrorCode, NotFoundException } from "../../exceptions/root";
+import {
+  BadRequestsException,
+  ErrorCode,
+  NotFoundException,
+} from "../../utils/ApiError";
 import {
   addAddressService,
   changeUserRoleService,

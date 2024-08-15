@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BadRequestsException, ErrorCode } from "../../exceptions/root";
+import { BadRequestsException, ErrorCode } from "../../utils/ApiError";
 import {
   createProductService,
   deleteProductService,
