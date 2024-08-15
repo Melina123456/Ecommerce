@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BadRequestsException, ErrorCode } from "../../utils/ApiError";
+import { BadRequestsException } from "../../utils/ApiError";
 import {
   createProductService,
   deleteProductService,
@@ -27,10 +27,7 @@ export const updateProduct = async (req: Request, res: Response) => {
   try {
     const data = req.body;
     if (!data || Object.keys(data).length === 0) {
-      throw new BadRequestsException(
-        "Enter something to update",
-        ErrorCode.DATA_NOT_FOUND
-      );
+      throw new BadRequestsException("Enter something to update");
     }
     if (data.tags) {
       data.tags = data.tags.join(",");

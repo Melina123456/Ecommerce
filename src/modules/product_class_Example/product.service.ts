@@ -1,5 +1,5 @@
 import { Product } from "@prisma/client";
-import { BadRequestsException, ErrorCode } from "../../utils/ApiError";
+import { BadRequestsException } from "../../utils/ApiError";
 import { ProductRepository } from "./product.repository";
 
 export class ProductService {
@@ -14,8 +14,7 @@ export class ProductService {
       );
     if (productNameExists) {
       throw new BadRequestsException(
-        "The product name already exitst, switch to another name",
-        ErrorCode.PRODUCT_NAME_EXISTS
+        "The product name already exitst, switch to another name"
       );
     }
     return await this.productRepository.createProductRepository(data, tags);

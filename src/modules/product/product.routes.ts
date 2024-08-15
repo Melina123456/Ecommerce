@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { errorHandler } from "../../middlewares/error_handler";
 import {
   createProduct,
   deleteProduct,
@@ -13,36 +12,20 @@ import adminMiddleware from "../../middlewares/admin";
 
 const ProductsRoutes: Router = Router();
 
-ProductsRoutes.post(
-  "/",
-  [authMiddleware, adminMiddleware],
-  errorHandler(createProduct)
-);
+ProductsRoutes.post("/", [authMiddleware, adminMiddleware], createProduct);
 
 ProductsRoutes.patch(
   "/update/:id",
   [authMiddleware, adminMiddleware],
-  errorHandler(updateProduct)
+  updateProduct
 );
 
-ProductsRoutes.delete(
-  "/:id",
-  [authMiddleware, adminMiddleware],
-  errorHandler(deleteProduct)
-);
+ProductsRoutes.delete("/:id", [authMiddleware, adminMiddleware], deleteProduct);
 
-ProductsRoutes.get(
-  "/",
-  [authMiddleware, adminMiddleware],
-  errorHandler(listProducts)
-);
+ProductsRoutes.get("/", [authMiddleware, adminMiddleware], listProducts);
 
-ProductsRoutes.get("/search", [authMiddleware], errorHandler(searchProducts));
+ProductsRoutes.get("/search", [authMiddleware], searchProducts);
 
-ProductsRoutes.get(
-  "/:id",
-  [authMiddleware, adminMiddleware],
-  errorHandler(getProductById)
-);
+ProductsRoutes.get("/:id", [authMiddleware, adminMiddleware], getProductById);
 
 export default ProductsRoutes;

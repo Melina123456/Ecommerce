@@ -1,8 +1,4 @@
-import {
-  BadRequestsException,
-  ErrorCode,
-  NotFoundException,
-} from "../../utils/ApiError";
+import { BadRequestsException, NotFoundException } from "../../utils/ApiError";
 import { CheckIfCartItemExists } from "../orders/orders.repository";
 import {
   addItemToCartRepository,
@@ -20,10 +16,7 @@ export const addItemToCartService = async (
 ) => {
   const productExists = await productNotFoundrepository(data);
   if (!productExists) {
-    throw new NotFoundException(
-      "Product not found.",
-      ErrorCode.PRODUCT_NOT_FOUND
-    );
+    throw new NotFoundException("Product not found.");
   }
   return addItemToCartRepository(data, uId);
 };
@@ -31,17 +24,11 @@ export const addItemToCartService = async (
 export const deleteItemFromCartService = async (id: number, uId: number) => {
   const cartExists = await CheckIfCartItemExists(id);
   if (!cartExists) {
-    throw new NotFoundException(
-      "Your cart is empty to delete.",
-      ErrorCode.PRODUCT_NOT_FOUND
-    );
+    throw new NotFoundException("Your cart is empty to delete.");
   }
   const ownItemDelete = await checkIfOwnCartItemRepo(id, uId);
   if (!ownItemDelete) {
-    throw new BadRequestsException(
-      "please enter your own cart id to delete.",
-      ErrorCode.ADDRESS_DOES_NOT_BELONG_TO_USER
-    );
+    throw new BadRequestsException("please enter your own cart id to delete.");
   }
   return await deleteItemFromCartRepository(id);
 };
@@ -53,16 +40,12 @@ export const changeQuantityService = async (
 ) => {
   const cartExists = await CheckIfCartItemExists(id);
   if (!cartExists) {
-    throw new NotFoundException(
-      "you have no such cart id.",
-      ErrorCode.CARTITEM_NOT_FOUND
-    );
+    throw new NotFoundException("you have no such cart id.");
   }
   const ownItem = await checkIfOwnCartItemRepo(id, uId);
   if (!ownItem) {
     throw new BadRequestsException(
-      "please enter your own cart id number to update quantity.",
-      ErrorCode.CARTITEM_DOES_NOT_BELONG_TO_USER
+      "please enter your own cart id number to update quantity."
     );
   }
   return await changeQuantityServiceRepo(id, quantity);

@@ -1,5 +1,5 @@
 import { Product } from "@prisma/client";
-import { BadRequestsException, ErrorCode } from "../../utils/ApiError";
+import { BadRequestsException } from "../../utils/ApiError";
 import {
   checkIfProductExists,
   checkIfProductNameExistsRepository,
@@ -15,8 +15,7 @@ export const createProductService = async (data: Product, tags: string) => {
   const productNameExists = await checkIfProductNameExistsRepository(data.name);
   if (productNameExists) {
     throw new BadRequestsException(
-      "The product name already exitst, switch to another name",
-      ErrorCode.PRODUCT_NAME_EXISTS
+      "The product name already exitst, switch to another name"
     );
   }
   return await createProductRepository(data, tags);

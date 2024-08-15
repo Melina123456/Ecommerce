@@ -18,7 +18,7 @@ import { HttpException } from "../utils/ApiError";
 // import { Request, Response, NextFunction } from "express";
 import {
   BadRequestsException,
-  ErrorCode,
+  // ErrorCode,
   InternalException,
 } from "../utils/ApiError";
 import { ZodError } from "zod";
@@ -34,23 +34,14 @@ export const errorMiddleware = <T>(
     exception = err;
   } else {
     if (err instanceof ZodError) {
-      exception = new BadRequestsException(
-        "unprocessable entity",
-        ErrorCode.UNPROCESSABLE_ENTITY,
-        err
-      );
+      exception = new BadRequestsException("unprocessable entity", err);
     } else {
-      exception = new InternalException(
-        "something went wrong!",
-        err,
-        ErrorCode.INTERNAL_EXCEPTION
-      );
+      exception = new InternalException("something went wrong!", err);
     }
   }
   console.log({ exception });
   res.status(exception.statusCode).json({
     message: exception.message,
-    errorCode: exception.errorCode,
     errors: exception.errors,
   });
 };

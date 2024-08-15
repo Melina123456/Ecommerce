@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { errorHandler } from "../../middlewares/error_handler";
 import authMiddleware from "../../middlewares/auth";
 import {
   cancelOrder,
@@ -14,20 +13,16 @@ import adminMiddleware from "../../middlewares/admin";
 
 const orderRoutes: Router = Router();
 
-orderRoutes.post("/", [authMiddleware], errorHandler(createOrder));
-orderRoutes.get("/", [authMiddleware], errorHandler(listOrders));
-orderRoutes.patch("/:id/cancel", [authMiddleware], errorHandler(cancelOrder));
-orderRoutes.get(
-  "/index",
-  [authMiddleware, adminMiddleware],
-  errorHandler(listAllOrders)
-);
+orderRoutes.post("/", [authMiddleware], createOrder);
+orderRoutes.get("/", [authMiddleware], listOrders);
+orderRoutes.patch("/:id/cancel", [authMiddleware], cancelOrder);
+orderRoutes.get("/index", [authMiddleware, adminMiddleware], listAllOrders);
 orderRoutes.patch(
   "/:id/status",
   [authMiddleware, adminMiddleware],
-  errorHandler(changeStatus)
+  changeStatus
 );
-orderRoutes.get("/get", [authMiddleware], errorHandler(getOrderOfUser));
-orderRoutes.get("/:id", [authMiddleware], errorHandler(getOrderById));
+orderRoutes.get("/get", [authMiddleware], getOrderOfUser);
+orderRoutes.get("/:id", [authMiddleware], getOrderById);
 
 export default orderRoutes;

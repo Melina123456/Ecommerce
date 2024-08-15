@@ -17,7 +17,6 @@ import {
 import {
   BadRequestsException,
   ConflictErrorException,
-  ErrorCode,
   NotFoundException,
 } from "../../utils/ApiError";
 import { updateUserDto } from "./dto/update_user_schema.dto";
@@ -26,8 +25,7 @@ export const addAddressService = async (data: Address, uid: number) => {
   const address = await CheckAddressExists(uid);
   if (address) {
     throw new ConflictErrorException(
-      "Address is already there for you, you can update it ",
-      ErrorCode.ADDRESS_ALREADY_EXISTS
+      "Address is already there for you, you can update it "
     );
   }
   return await addAddressRepo(data, uid);
@@ -37,10 +35,7 @@ export const deleteAddressService = async (uid: number, id: number) => {
   const address = await CheckAddressExistsById(uid, id);
   console.log(address);
   if (!address) {
-    throw new NotFoundException(
-      "you have no address with this id to delete.",
-      ErrorCode.ADDRESS_NOT_FOUND
-    );
+    throw new NotFoundException("you have no address with this id to delete.");
   }
   return await deleteAddressRepo(address);
 };
@@ -56,7 +51,7 @@ export const listUsersService = async (skip: number, take: number) => {
 export const getUserByIdservice = async (uid: number) => {
   const user = await getUserByIdRepo(uid);
   if (!user) {
-    throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
+    throw new NotFoundException("User not found");
   }
   return user;
 };
@@ -64,7 +59,7 @@ export const getUserByIdservice = async (uid: number) => {
 export const changeUserRoleService = async (id: number, role: Role) => {
   const user = await findUser(id);
   if (!user) {
-    throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
+    throw new NotFoundException("User not found");
   }
   const updatedUser = await changeUserRoleRepo(id, role);
   return updatedUser;
@@ -79,8 +74,7 @@ export const updateUserservice = async (
   );
   if (shippingAddresses.userId !== id) {
     throw new BadRequestsException(
-      "you can update your address only with your created address.",
-      ErrorCode.ADDRESS_DOES_NOT_BELONG_TO_USER
+      "you can update your address only with your created address."
     );
   }
 
@@ -89,8 +83,7 @@ export const updateUserservice = async (
   );
   if (billingAddresses.userId !== id) {
     throw new BadRequestsException(
-      "you can update your address only with your created address.",
-      ErrorCode.ADDRESS_DOES_NOT_BELONG_TO_USER
+      "you can update your address only with your created address."
     );
   }
   return await updateUserRepo(id, validatedData);

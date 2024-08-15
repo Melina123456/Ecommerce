@@ -1,10 +1,6 @@
 import { Request, Response } from "express";
 import { AddressSchema, updateUserSchema } from "./users.schema";
-import {
-  BadRequestsException,
-  ErrorCode,
-  NotFoundException,
-} from "../../utils/ApiError";
+import { BadRequestsException, NotFoundException } from "../../utils/ApiError";
 import {
   addAddressService,
   changeUserRoleService,
@@ -56,7 +52,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const validatedData = updateUserSchema.parse(req.body);
     const id = req.user?.id;
     if (!id) {
-      throw new NotFoundException("user not found", ErrorCode.USER_NOT_FOUND);
+      throw new NotFoundException("user not found");
     }
     const updatedUser = await updateUserservice(+id, validatedData);
     res.json(updatedUser);
@@ -103,10 +99,7 @@ export const updateAddress = async (req: Request, res: Response) => {
   try {
     const data = req.body;
     if (!data || Object.keys(data).length === 0) {
-      throw new BadRequestsException(
-        "Enter something to update",
-        ErrorCode.DATA_NOT_FOUND
-      );
+      throw new BadRequestsException("Enter something to update");
     }
     const updatedAddress = await updateAddressService(+req.params.id, data);
     res.json(updatedAddress);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { errorHandler } from "../../middlewares/error_handler";
+
 import authMiddleware from "../../middlewares/auth";
 import {
   addAddress,
@@ -15,32 +15,24 @@ import adminMiddleware from "../../middlewares/admin";
 
 const userRoutes: Router = Router();
 
-userRoutes.post("/address", [authMiddleware], errorHandler(addAddress));
+userRoutes.post("/address", [authMiddleware], addAddress);
 
-userRoutes.delete(
-  "/address/:id",
-  [authMiddleware],
-  errorHandler(deleteAddress)
-);
+userRoutes.delete("/address/:id", [authMiddleware], deleteAddress);
 
-userRoutes.get("/address", [authMiddleware], errorHandler(listAddresses));
+userRoutes.get("/address", [authMiddleware], listAddresses);
 
-userRoutes.put("/update", [authMiddleware], errorHandler(updateUser));
+userRoutes.put("/update", [authMiddleware], updateUser);
 userRoutes.patch(
   "/:id/role",
   [authMiddleware, adminMiddleware],
-  errorHandler(changeUserRole)
+  changeUserRole
 );
-userRoutes.get("/", [authMiddleware, adminMiddleware], errorHandler(listUsers));
-userRoutes.get(
-  "/:id",
-  [authMiddleware, adminMiddleware],
-  errorHandler(getUserById)
-);
+userRoutes.get("/", [authMiddleware, adminMiddleware], listUsers);
+userRoutes.get("/:id", [authMiddleware, adminMiddleware], getUserById);
 userRoutes.patch(
   "/update/:id",
   [authMiddleware, adminMiddleware],
-  errorHandler(updateAddress)
+  updateAddress
 );
 
 export default userRoutes;
